@@ -52,4 +52,25 @@ router.delete(/food\/[a-z0-9]{24,24}$/, (req, res) => {
     res.status(200).json(docs);
   });
 });
+//Patch one food
+router.patch(/food\/[a-z0-9]{24,24}$/, (req, res) => {
+  var url = req.url;
+  var id = url.split("/")[2];
+  var keys = Object.keys(req.body);
+  var food = {};
+  for (var i = 0; i < keys.length; i++) {
+    food[keys[i]] = req.body[keys[i]];
+  }
+  // console.log(user);
+  Food.findOneAndUpdate({_id: id}, food, (err, params) => {
+      if(err) {
+        res.status(500).json({
+          "msn": "Error no se pudo actualizar los datos"
+        });
+        return;
+      }
+      res.status(200).json(params);
+      return;
+  });
+});
 module.exports = router;
