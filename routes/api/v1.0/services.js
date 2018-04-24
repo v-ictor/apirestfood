@@ -44,4 +44,12 @@ router.get(/food\/[a-z0-9]{24,24}$/, (req, res) => {
     });
   });
 });
+//DELETE one food
+router.delete(/food\/[a-z0-9]{24,24}$/, (req, res) => {
+  var url = req.url;
+  var id = url.split("/")[2];
+  Food.find({_id : id}).remove().exec( (error, docs) => {
+    res.status(200).json(docs);
+  });
+});
 module.exports = router;
