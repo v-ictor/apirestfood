@@ -24,5 +24,24 @@ router.post("/food", (req, res) => {
     });
   });
 });
-
+//READ all food
+router.get("/food", (req, res) => {
+  Food.find({}).exec( (error, docs) => {
+    res.status(200).json(docs);
+  });
+});
+//READ only one food
+router.get(/food\/[a-z0-9]{24,24}$/, (req, res) => {
+  var url = req.url;
+  var id = url.split("/")[2];
+  Food.findOne({_id : id}).exec( (error, docs) => {
+    if (docs != null) {
+      res.status(200).json(docs);
+      return;
+    }
+    res.status(404).json({
+      "msn" : "Recurso no encontrado"
+    });
+  });
+});
 module.exports = router;
